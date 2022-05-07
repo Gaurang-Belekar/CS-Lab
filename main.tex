@@ -7,7 +7,7 @@
 \setlength\parindent{0pt} % Removes all indentation from paragraphs
 \setlength{\parskip}{1.3ex plus 0.5ex minus 0.3ex} %Vertical space between two para
 \newcommand{\tab}[1]{\hspace{.2\textwidth}\rlap{#1}}
-
+\usepackage{hyperref}
 
 \title{Control System -Lab}
 \author{Gaurang Belekar, 20bec015}
@@ -17,7 +17,12 @@
 
 \maketitle
 \begin{center}
-\text{Under the Guidance of Dr.Jagadish N}
+\text{Under the Guidance of Dr.Jagadish N}\\
+\\
+
+\text{Code and Sources link:}
+
+\url{https://github.com/Gaurang-Belekar/CS-Lab}
 \end{center}
 \pagebreak
 
@@ -705,7 +710,9 @@ end\\
 
 \section*{\textcolor{black}{Conclusion}}
 From the above experiment, it can be concluded that for getting a desired output, we should consider the value of zeta between zero and one. This way, we get our system output in less time with few inconsistencies in the beginning.
+ 
  \pagebreak
+
 
 \begin{center}
     \LARGE {EXPERIMENT NO : 13}
@@ -733,7 +740,7 @@ Damping ratios of each pole, returned as a vector sorted in the same order as wn
  \par
 
 \section*{\textcolor{black}{Code :}}
-s= \%s;\ 
+s= \%s;\\
 zeta= [0 0.2 0.5 1 5 20];\\
 wn=10;\\
 col = ['r' 'b' 'g' 'b' 'r' 'g']\\
@@ -760,7 +767,340 @@ end\\
         \label{Result}
 \end{figure}
 \section*{\textcolor{black}{Conclusion}}
-From the above analysis, it can be concluded that the closed-loop systems tend to be stable under certain conditions. the mere fact that all closed-loop poles lie in the left-half s plane does not guarantee satisfactory transient- response characteristics. If dominant complex-conjugate closed-loop poles lie close to the j axis, the transient response may exhibit excessive oscilla- tions or may be very slow. Therefore, to guarantee fast, yet well-damped, transient-response characteristics, it is necessary that the closed-loop poles of the system lie in a particular region in the complex plane.
+From the above analysis, it can be concluded that the closed-loop systems tend to be stable under certain conditions. the mere fact that all closed-loop poles lie in the left-half s plane does not guarantee satisfactory transient- response characteristics. If dominant complex-conjugate closed-loop poles lie close to the j axis, the transient response may exhibit excessive oscillations or may be very slow. Therefore, to guarantee fast, yet well-damped, transient-response characteristics, it is necessary that the closed-loop poles of the system lie in a particular region in the complex plane.
  \pagebreak
 
+
+\begin{center}
+    \LARGE {EXPERIMENT NO : 14}
+             
+\end{center}
+
+\section*{\textcolor{black}{AIM: }}
+\text{To find out the unstable roots in a system without calculating for it by using the routh stability criterion}
+
+\section*{\textcolor{black}{Block Diagram :}}
+
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =10cm, height = 7cm]{images/exp141.png}
+        \caption{Block Diagram}
+        \label{Graph}
+\end{figure}
+
+\section*{\textcolor{black}{Theory :}}
+Routh’s stability criterion tells us whether or not there are unstable roots in a polynomial equation without actually solving for them. This stability criterion applies to polynomials with only a finite number of terms. When the criterion is applied to a control system, information about absolute stability can be obtained directly from the coefficients of the characteristic equation.
+To find the Routh’s stability criterion, we take the following steps:
+1. Write the polynomial in s in the following form:
+           
+where the coefficients are real quantities. We assume that ; that is, any zero root has been removed. 
+2. If any of the coefficients are zero or negative in the presence of at least one positive coefficient, a root or roots exist that are imaginary or that have positive real parts. Therefore, in such a case, the system is not stable.
+3. If all coefficients are positive, arrange the coefficients of the polynomial in rows and columns according.
+
+Here,  ,  and so on. Similarly, we can find c.
+This process is continued until the nth row has been completed.Routh’s stability criterion states that the number of roots of characteristic equation with positive real parts is equal to the number of changes in sign of the coefficients of the first column of the array. It should be noted that the exact values of the terms in the first column need not be known; instead, only the signs are needed.
+ \par
+
+\section*{\textcolor{black}{Code :}}
+s = \%s;\\
+oltf= syslin('c',10/(s\wedge2+16*s+16))\\
+fb=syslin('c',1/(0*s+1))\\
+cltf = oltf/.fb\\
+\texttt{[R\underline{{ }}arr,n]=routh\underline{{ }}t(denom(cltf))}\\
+plzr(cltf)\\
+   \par 
+
+\section*{\textcolor{black}{OUTPUT/OBSERVATIONS}}
+
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =10cm, height = 10cm]{images/exp142.png}
+        \caption{Graph}
+        \label{Graph}
+\end{figure}
+
+
+\section*{\textcolor{black}{Observation and Conclusion}}
+In the output we can see that in the first column of the Routh array there is no sign change and also no missing term or 0 term hence the given system is stable. If all the roots of the characteristic equation exist to the left half of the ‘s’ plane, then  system is stable. If at least one root of the characteristic equation exists to the right half of the ‘s’ plane, then  system is unstable.
+
+ \pagebreak
+ 
+ \begin{center}
+    \LARGE {EXPT 15:Root Locus}
+             
+\end{center}
+
+\section*{\textcolor{black}{AIM: }}
+\text{To understand and find the root loci of a given system.}
+
+\section*{\textcolor{black}{Block Diagram :}}
+
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =20cm, height = 10cm]{images/root block.jpeg}
+        \caption{Graph}
+        \label{Graph}
+\end{figure}
+
+\section*{\textcolor{black}{Theory :}}
+The root loci for the system are the loci of the closed-loop poles as the gain K is varied from zero to infinity.
+A typical procedure for sketching the root-locus plot is as follows:\\
+1. Determine the root loci on the real axis.\\
+2. Determine the asymptotes of the root loci.\\
+3. Determine the breakaway point.\\
+4. Determine the points where the root loci cross the imaginary axis.\\
+5. Choose a test point in the broad neighborhood of the jw axis and origin.\\
+6. Draw the root loci, based on the information obtained.\\
+
+ \par
+
+\section*{\textcolor{black}{Code :}}
+///Code 1
+s=\%s;\\
+g=syslin('c',1/((s.\wedge2+8*s+20)))\\
+plzr(g)\\
+sgrid()\\
+
+///Code 2
+
+s=\%s;\\
+g=syslin('c',1/((s.\wedge2+8*s+20)))\\
+plzr(g)\\
+sgrid()\\
+
+  \par 
+
+\section*{\textcolor{black}{OUTPUT}}
+
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =20cm, height = 10cm]{images/exp151.png}
+        \caption{Graph}
+        \label{Graph}
+\end{figure}
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =20cm, height = 10cm]{images/exp152.png}
+        \caption{Graph}
+        \label{Graph}
+\end{figure}
+
+\section*{\textcolor{black}{Observation and Conclusion}}
+The root locus starts at oltf poles and ends at the oltf zeroes.
+\pagebreak
+ 
+ 
+ 
+\begin{center}
+    \LARGE {EXPT 16:Bode Plot}
+             
+\end{center}
+
+\section*{\textcolor{black}{AIM: }}
+\text{To understand the stability of a system using its Bode plot.}
+
+\section*{\textcolor{black}{Block Diagram :}}
+
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =20cm, height = 10cm]{images/bode block 1.jpeg}
+        \caption{Graph}
+        \label{Graph}
+\end{figure}
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =20cm, height = 10cm]{images/bode block 2.jpeg}
+        \caption{Graph}
+        \label{Graph}
+\end{figure}
+
+
+\section*{\textcolor{black}{Theory :}}
+A Bode diagram consists of two graphs: One is a plot of the logarithm of the magnitude of a sinusoidal transfer function; the other is a plot of the phase angle; both are plotted against the frequency on a logarithmic scale. The standard representation of the logarithmic magnitude of G(jw) is , where the base of the logarithm is 10.The unit used in this representation of the magnitude is the decibel, usually abbreviated dB.
+
+The magnitude of the open loop transfer function in dB is -
+  M=20log|G(jω)H(jω)|
+
+The phase angle of the open loop transfer function in degrees is -
+  ϕ=∠G(jω)H(jω)
+
+ \par
+
+\section*{\textcolor{black}{Code :}}
+
+s = \%s;\\
+p = syslin('c',1000000/(s*(s*1+10)*(s*1+ 100)))\\
+h = syslin('c', (s*1+0.1)/(10000*(s*1+0.1)))\\
+g = p*h \\        
+bode(g)\\
+bode(h)\\
+bode(p)\\
+\texttt{g\underline{{ }}margin(g)}\\
+\texttt{p\underline{{ }}margin(g)}\\
+\texttt{show\underline{{ }}margins(g)}\\
+
+
+  \par 
+
+\section*{\textcolor{black}{OUTPUT}}
+
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =20cm, height = 10cm]{images/bode plot.png}
+        \caption{Graph}
+        \label{Graph}
+\end{figure}
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =20cm, height = 10cm]{images/bode ans.png}
+        \caption{Graph}
+        \label{Graph}
+\end{figure}
+
+\section*{\textcolor{black}{Observation and Conclusion}}
+The stability of a system can be understood by the relation between gain and phase margin . If both GM and FM are positive system is stable , if both are equal to zero then marginally stable and if both are negative then unstable. 
+In this case the FM and GM are both positive hence stable
+
+
+\pagebreak
+
+\begin{center}
+    \LARGE {EXPT 17:Nyquist Plot}
+             
+\end{center}
+
+\section*{\textcolor{black}{AIM: }}
+\text{ To understand wheather a given open-loop system is stable when converted to closed-loop.}
+
+\section*{\textcolor{black}{Block Diagram :}}
+
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =20cm, height = 10cm]{images/Nyquist block..jpeg}
+        \caption{Graph}
+        \label{Graph}
+\end{figure}
+
+\section*{\textcolor{black}{Theory :}}
+Nyquist plots, are commonly used in the frequency-response representation of linear, time-invariant, feedback control systems. Nyquist plots are polar plots, used for finding the stability of an open-loop system when converted to closed-loop system.
+Here, z=n+p.
+Where, no. of OLTF poles on RHS. no. of encirclements on .Positive for clockwise and negative for anti-clockwise, no. of CLTF zeroes on RHS.
+For closed loop to be stable, z should be equal to zero, or n=-p .
+
+ \par
+
+\section*{\textcolor{black}{Code :}}
+
+s = \%s;\\
+g=5/(s-1);\\
+G=syslin('c',g)\\
+nyquist(G)\\
+
+
+  \par 
+
+\section*{\textcolor{black}{OUTPUT}}
+We analyse the plots for 5 diff systems
+1. g=5/(s-1)
+2. g=120/(s-2)(s+6)(s+8)
+3. g=50/(s-2)(s+6)(s+8)
+4. g=(s+1)(s+2)/(s-3)(s-4)
+5. g=10(s+1)(s+2)/(s-3)(s-4)
+
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =20cm, height = 10cm]{images/Nyquist Plot.png}
+        \caption{Graph}
+        \label{Graph}
+\end{figure}
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =20cm, height = 10cm]{images/nyquist 2.png}
+        \caption{Graph}
+        \label{Graph}
+\end{figure}
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =20cm, height = 10cm]{images/nyquist 3.png}
+        \caption{Graph}
+        \label{Graph}
+\end{figure}
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =20cm, height = 10cm]{images/nyquist 4.png}
+        \caption{Graph}
+        \label{Graph}
+\end{figure}
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =20cm, height = 10cm]{images/nyquist 5.png}
+        \caption{Graph}
+        \label{Graph}
+\end{figure}
+
+\section*{\textcolor{black}{Observation and Conclusion}}
+To check the stability we check the number of encirclements around-1+jw and see the direction to get values of n and number of oltf poles on RHS of s-plane if n=-p then the system is stable.
+So by that 1st, 2nd and 5th are stable systems.
+So in this way we can check the stability of an open loop system when converted to closed loop, by the use of Nyquist Plot.
+\pagebreak
+
+\begin{center}
+    \LARGE {EXPT 18:PID Control}
+             
+\end{center}
+
+\section*{\textcolor{black}{AIM: }}
+\text{ To understand the working of the speed control system of a motor using the properties of second order system.}
+
+\section*{\textcolor{black}{Block Diagram :}}
+
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =20cm, height = 10cm]{images/pid block.jpeg}
+        \caption{Graph}
+        \label{Graph}
+\end{figure}
+
+\section*{\textcolor{black}{Theory :}}
+The usefulness of PID controls lies in their general applicability to most control systems. In particular, when the mathematical model of the plant is not known and therefore analytical design methods cannot be used, PID controls prove to be most useful. If a mathematical model of the plant can be derived, then it is possible to apply various design techniques for determining parameters of the controller that will meet the transient and steady-state specifications of the closed-loop system. However, if the plant is so complicated that its mathematical model cannot be easily obtained, then an analytical or computational approach to the design of a PID controller is not possible. Then we must resort to experimental approaches to the tuning of PID controllers.
+
+The transfer function of a PID controller is given as
+kp + ki/s + kd*s
+
+Here, kp acts as the stabilizer, ki acts as the integrator and kd acts as the differentiator.
+
+ \par
+
+\section*{\textcolor{black}{Code :}}
+
+s = \%s;\\
+col=['r','g','b','y','b']\\
+for i=1:5\\
+kp=10;\\
+ki=8;\\
+kd=i*2;\\
+t=0:0.01:10;\\
+G=syslin('c',1/((s+2)*(s+3)));\\
+C=syslin('c',kp + ki/s + kd*s);\\
+H=syslin('c',1/(s*0+1));\\
+sys=(C*G)/.H;\\
+plot(t, csim('step',t,sys),col(i));\\
+end\\
+
+
+  \par 
+
+\section*{\textcolor{black}{OUTPUT}}
+
+\begin{figure}[!hth]
+        \centering
+        \includegraphics[width =20cm, height = 10cm]{images/PID.png}
+        \caption{Graph}
+        \label{Graph}
+\end{figure}
+
+\section*{\textcolor{black}{Observation and Conclusion}}
+The proportional integral derivative controller is used to improve the stability of the control system and to decrease steady state error.
+
+\pagebreak
 \end{document}
